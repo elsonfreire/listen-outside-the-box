@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Serviço de Inteligência Artificial (Python)
+  ml_service:
+    build: ./ml_service
+    container_name: lotb-ml
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ml_service/data:/app/data
+      - ./ml_service/dataset:/app/dataset
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NODE_API_URL=http://api:5000
+
+  # API Principal (Node.js)
+  api:
+    build: ./api
+    container_name: lotb-api
+    ports:
+      - "5000:5000"
+    environment:
+      # Credenciais do Spotify (use arquivo .env)
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - ML_SERVICE_URL=http://ml_service:8000
+    depends_on:
+      - ml_service
+    env_file:
+      - .env

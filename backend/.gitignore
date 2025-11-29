@@ -1,0 +1,27 @@
+# --- Dependências ---
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# --- Variáveis de Ambiente (SEGURANÇA CRÍTICA) ---
+.env
+
+# --- Banco de Dados e Estado Local ---
+ml_service/data/
+*.db
+*.sqlite
+*.index
+
+# --- Arquivos de Áudio (Pesados) ---
+ml_service/dataset/
+*.wav
+*.mp3
+
+# --- Docker e Logs ---
+.docker/
+*.log
+
+# --- Sistema Operacional ---
+.DS_Store
+Thumbs.db
