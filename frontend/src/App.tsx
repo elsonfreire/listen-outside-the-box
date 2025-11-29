@@ -1,8 +1,11 @@
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import HomePage from "./pages/Home";
+import { useState } from "react";
 
 function App() {
+  const [logged, setLogged] = useState(false);
+
   return (
     <div className=" w-full min-h-screen">
       <div className="bg-green-800 text-white p-8 shadow-lg">
@@ -15,7 +18,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="" element={<HomePage />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route
+              path="login"
+              element={<LoginPage logged={logged} setLogged={setLogged} />}
+            />
           </Routes>
         </BrowserRouter>
       </div>

@@ -2,9 +2,12 @@ import { Navigate } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
 
-const LoginPage = () => {
-  const [logged, setLogged] = useState(false);
+interface LoginPageProps {
+  logged: boolean;
+  setLogged: (newValue: boolean) => void;
+}
 
+const LoginPage = ({ logged, setLogged }: LoginPageProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
