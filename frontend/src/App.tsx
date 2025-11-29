@@ -6,7 +6,9 @@ function App() {
   return (
     <div className=" w-full min-h-screen">
       <div className="bg-green-800 text-white p-8 shadow-lg">
-        <h1 className="text-4xl font-bold">LOTB</h1>
+        <a className="text-4xl font-bold" href="/">
+          LOTB
+        </a>
       </div>
 
       <div className="min-h-screen bg-neutral-200 p-10 flex justify-center">
