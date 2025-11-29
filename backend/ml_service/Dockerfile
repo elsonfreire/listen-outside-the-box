@@ -1,7 +1,7 @@
-# Usa Python 3.10 leve
+# Mantemos o 3.10 pois é muito estável para IA
 FROM python:3.10-slim
 
-# Instala FFmpeg, Node.js (CRUCIAL PARA YT-DLP) e dependências
+# Instala git (necessário para instalar yt-dlp do repositório) e nodejs
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsndfile1 \
@@ -11,17 +11,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copia requirements e instala
+# Copia requirements limpo
 COPY requirements.txt .
-# Força a atualização do yt-dlp para a versão mais recente do git (correções diárias do YouTube)
+
+# Instala as dependências
+# O --upgrade force-reinstall no final garante que o yt-dlp seja o mais atual possível
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --upgrade --force-reinstall "git+https://github.com/yt-dlp/yt-dlp.git"
 
-# Copia o código fonte
 COPY . .
 
-# Expõe a porta 8000
 EXPOSE 8000
 
-# Comando para iniciar
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
