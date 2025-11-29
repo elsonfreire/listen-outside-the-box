@@ -5,7 +5,7 @@ import HomePage from "./pages/Home";
 function App() {
   return (
     <div className=" w-full min-h-screen">
-      <div className="bg-green-900 text-white p-8 shadow-lg">
+      <div className="bg-green-800 text-white p-8 shadow-lg">
         <h1 className="text-4xl font-bold">LOTB</h1>
       </div>
 
