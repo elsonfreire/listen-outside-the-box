@@ -3,6 +3,8 @@ import Button from "../components/Button";
 import { useState } from "react";
 
 const HomePage = () => {
+  const [isLoadingSuggestion, setisLoadingSuggestion] = useState(false);
+
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
   const [artistName, setArtistName] = useState("Jorge Vercillo");
   const [songLink, setSongLink] = useState(
@@ -10,6 +12,8 @@ const HomePage = () => {
   );
 
   const getSongSuggestion = () => {
+    setisLoadingSuggestion(true);
+
     axios
       .post("http://localhost:5000/analyze", {
         query: songName,
@@ -19,10 +23,16 @@ const HomePage = () => {
         setSongName(resultSong.title);
         setArtistName(resultSong.artist);
         setSongLink(resultSong.link);
+
+        setisLoadingSuggestion(false);
       });
   };
 
-  return (
+  return isLoadingSuggestion ? (
+    <h3 className="font-bold text-2xl text-center">
+      Loading next song suggestion...
+    </h3>
+  ) : (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-4 items-center">
         <div>
