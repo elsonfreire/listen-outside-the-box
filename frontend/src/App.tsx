@@ -14,7 +14,7 @@ function App() {
         </a>
       </div>
 
-      <div className="min-h-screen bg-neutral-200 p-10 flex justify-center">
+      <div className="min-h-screen bg-neutral-200  py-30 flex justify-center">
         <BrowserRouter>
           <Routes>
             <Route path="" element={<HomePage />} />
