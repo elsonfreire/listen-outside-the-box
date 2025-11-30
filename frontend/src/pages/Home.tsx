@@ -9,12 +9,10 @@ const HomePage = () => {
     "https://open.spotify.com/track/2fAwUj2Ezq0uB2ClAKEDb1?si=00f82328433e4ade"
   );
 
-  const getMusic = () => {
-    console.log("A");
-
+  const getSongSuggestion = () => {
     axios
       .post("http://localhost:5000/analyze", {
-        query: "Ela Une Todas as Coisas",
+        query: songName,
       })
       .then((response) => response.data.winner)
       .then((resultSong) => {
@@ -36,7 +34,7 @@ const HomePage = () => {
         </a>
       </div>
       <div className="flex justify-center gap-2">
-        <Button onClick={getMusic}>Like</Button>
+        <Button onClick={getSongSuggestion}>Like</Button>
         <Button>Dislike</Button>
       </div>
     </div>
