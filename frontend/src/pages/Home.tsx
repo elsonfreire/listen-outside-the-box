@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import { useState } from "react";
 
 const HomePage = () => {
-  const [isLoadingSuggestion, setisLoadingSuggestion] = useState(false);
+  const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
 
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
   const [artistName, setArtistName] = useState("Jorge Vercillo");
@@ -11,21 +11,66 @@ const HomePage = () => {
     "https://open.spotify.com/track/2fAwUj2Ezq0uB2ClAKEDb1?si=00f82328433e4ade"
   );
 
-  const getSongSuggestion = () => {
-    setisLoadingSuggestion(true);
+  const [candidateSongs, setCandidateSongs] = useState([]);
 
-    axios
-      .post("http://localhost:5000/analyze", {
+  const setSuggestion = (song: any) => {
+    setSongName(song.title);
+    setArtistName(song.artist);
+    setSongLink(song.link);
+  };
+
+  const getSongCandidates = async () => {
+    try {
+      const response = axios.post("http://localhost:5000/analyze", {
         query: songName,
-      })
-      .then((response) => response.data.winner)
-      .then((resultSong) => {
-        setSongName(resultSong.title);
-        setArtistName(resultSong.artist);
-        setSongLink(resultSong.link);
-
-        setisLoadingSuggestion(false);
       });
+
+      const candidates = (await response).data.candidates || [];
+      setCandidateSongs(candidates);
+      return candidates;
+    } catch (err) {
+      console.error(err);
+      setCandidateSongs([]);
+      return [];
+    }
+  };
+
+  const getRandomSuggestion = (candidates: any) => {
+    if (!candidates) return;
+
+    const randomIndex = Math.floor(Math.random() * candidates.length);
+
+    const selectedSong = candidates[randomIndex];
+
+    const newCandidates = candidates.filter(
+      (song: any) => song !== selectedSong
+    );
+    setCandidateSongs(newCandidates);
+
+    return selectedSong;
+  };
+
+  const handleLike = async () => {
+    setIsLoadingSuggestion(true);
+    const candidates = await getSongCandidates();
+
+    if (candidates.length > 0) {
+      const suggestion = getRandomSuggestion(candidates);
+      setSuggestion(suggestion);
+    }
+
+    setIsLoadingSuggestion(false);
+  };
+
+  const handleDislike = async () => {
+    setIsLoadingSuggestion(true);
+
+    if (candidateSongs.length > 0) {
+      const suggestion = getRandomSuggestion(candidateSongs);
+      setSuggestion(suggestion);
+    }
+
+    setIsLoadingSuggestion(false);
   };
 
   return isLoadingSuggestion ? (
@@ -44,8 +89,8 @@ const HomePage = () => {
         </a>
       </div>
       <div className="flex justify-center gap-2">
-        <Button onClick={getSongSuggestion}>Like</Button>
-        <Button>Dislike</Button>
+        <Button onClick={handleLike}>Like</Button>
+        <Button onClick={handleDislike}>Dislike</Button>
       </div>
     </div>
   );
