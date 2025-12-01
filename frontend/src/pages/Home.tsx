@@ -7,23 +7,21 @@ const HomePage = () => {
 
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
   const [artistName, setArtistName] = useState("Jorge Vercillo");
-  const [songLink, setSongLink] = useState(
-    "https://open.spotify.com/track/2fAwUj2Ezq0uB2ClAKEDb1?si=00f82328433e4ade"
+  const [songId, setSongId] = useState(
+    "2fAwUj2Ezq0uB2ClAKEDb1?si=00f82328433e4ade"
   );
 
   const [candidateSongs, setCandidateSongs] = useState([]);
 
   const setSuggestion = (song: any) => {
-    setSongName(song.title);
+    setSongName(song.name);
     setArtistName(song.artist);
-    setSongLink(song.link);
+    setSongId(song.id);
   };
 
   const getSongCandidates = async () => {
     try {
-      const response = axios.post("http://localhost:5000/analyze", {
-        query: songName,
-      });
+      const response = axios.get(`http://localhost:5000/candidates/${songId}`);
 
       const candidates = (await response).data.candidates || [];
       setCandidateSongs(candidates);
@@ -84,7 +82,11 @@ const HomePage = () => {
           <h2 className="font-bold text-4xl text-center">{songName}</h2>
           <h3 className="font-bold text-2xl text-center">{artistName}</h3>
         </div>
-        <a href={songLink} target="_blank" className="text-blue-800 underline">
+        <a
+          href={`https://open.spotify.com/track/${songId}`}
+          target="_blank"
+          className="text-blue-800 underline"
+        >
           Abrir no Spotify
         </a>
       </div>
