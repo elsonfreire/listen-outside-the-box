@@ -1,14 +1,11 @@
 import type React from "react";
 import { Navigate } from "react-router-dom";
+import { getLoggedUser } from "../data/authStorage";
 
-const PrivateRoute = ({
-  loggedUsername: isLoggedUsername,
-  children,
-}: {
-  loggedUsername: string | null;
-  children: React.ReactElement;
-}) => {
-  if (!isLoggedUsername) return <Navigate to="/login" replace />;
+const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
+  const user = getLoggedUser();
+
+  if (!user) return <Navigate to="/login" replace />;
   return children;
 };
 

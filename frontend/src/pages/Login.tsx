@@ -1,41 +1,41 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
-import { users, type User } from "../data/users";
+import { login, registerUser, type User } from "../data/usersStorage";
+import { getLoggedUser, setLoggedUser } from "../data/authStorage";
 
-interface LoginPageProps {
-  loggedUsername: string | null;
-  setLoggedUsername: (newValue: string | null) => void;
-}
+const LoginPage = () => {
+  const navigate = useNavigate();
 
-const LoginPage = ({ loggedUsername, setLoggedUsername }: LoginPageProps) => {
   const [isRegister, setIsRegister] = useState(false);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  if (loggedUsername) return <Navigate to="/" replace />;
+  if (getLoggedUser()) return <Navigate to="/" replace />;
 
-  const login = () => {
-    const user = users.find((user) => user.name === username);
+  const handleLogin = () => {
+    const user = login(username, password);
 
     if (!user) return console.log("User doesn't exist");
 
     if (user.password !== password) return console.log("Wrong password");
 
-    setLoggedUsername(user.name);
+    setLoggedUser(user);
+
+    navigate("/");
   };
 
-  const register = () => {
+  const handleRegister = () => {
     const user: User = {
       name: username,
       email,
       password,
     };
-    users.push(user);
+    registerUser(user);
 
-    setLoggedUsername(user.name);
+    setIsRegister(false);
   };
 
   return (
@@ -77,8 +77,8 @@ const LoginPage = ({ loggedUsername, setLoggedUsername }: LoginPageProps) => {
 
         <Button
           onClick={() => {
-            if (isRegister) register();
-            else login();
+            if (isRegister) handleRegister();
+            else handleLogin();
           }}
         >
           {isRegister ? "Register" : "Login"}

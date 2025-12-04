@@ -3,10 +3,9 @@ import LoginPage from "./pages/Login";
 import HomePage from "./pages/Home";
 import { useState } from "react";
 import PrivateRoute from "./components/PrivateRoute";
+import type { User } from "./data/usersStorage";
 
 function App() {
-  const [loggedUsername, setLoggedUsername] = useState<string | null>(null);
-
   return (
     <div className=" w-full min-h-screen">
       <div className="bg-green-800 text-white p-8 shadow-lg">
@@ -21,20 +20,12 @@ function App() {
             <Route
               path=""
               element={
-                <PrivateRoute loggedUsername={loggedUsername}>
+                <PrivateRoute>
                   <HomePage />
                 </PrivateRoute>
               }
             />
-            <Route
-              path="login"
-              element={
-                <LoginPage
-                  loggedUsername={loggedUsername}
-                  setLoggedUsername={setLoggedUsername}
-                />
-              }
-            />
+            <Route path="login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       </div>
