@@ -1,7 +1,8 @@
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import HomePage from "./pages/Home";
 import { useState } from "react";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const [loggedUsername, setLoggedUsername] = useState<string | null>(null);
@@ -17,7 +18,14 @@ function App() {
       <div className="min-h-screen bg-neutral-200  py-30 flex justify-center">
         <BrowserRouter>
           <Routes>
-            <Route path="" element={<HomePage />} />
+            <Route
+              path=""
+              element={
+                <PrivateRoute loggedUsername={loggedUsername}>
+                  <HomePage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="login"
               element={
