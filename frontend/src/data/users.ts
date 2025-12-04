@@ -1,15 +1,13 @@
-interface User {
+export interface User {
   name: string;
   email: string;
   password: string;
 }
 
-const users: User[] = [
+export const users: User[] = [
   {
     name: "admin",
     email: "admin@mail.com",
     password: "admin",
   },
 ];
-
-export default users;

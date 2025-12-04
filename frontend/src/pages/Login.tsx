@@ -1,19 +1,21 @@
 import { Navigate } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
-import users from "../data/users";
+import { users, type User } from "../data/users";
 
 interface LoginPageProps {
   loggedUsername: string | null;
   setLoggedUsername: (newValue: string | null) => void;
 }
 
-const LoginPage = ({
-  loggedUsername: logged,
-  setLoggedUsername: setLoggedUsername,
-}: LoginPageProps) => {
+const LoginPage = ({ loggedUsername, setLoggedUsername }: LoginPageProps) => {
+  const [isRegister, setIsRegister] = useState(false);
+
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  if (loggedUsername) return <Navigate to="/" replace />;
 
   const login = () => {
     const user = users.find((user) => user.name === username);
@@ -23,14 +25,24 @@ const LoginPage = ({
     if (user.password !== password) return console.log("Wrong password");
 
     setLoggedUsername(user.name);
-    console.log("Logged in");
   };
 
-  if (logged) return <Navigate to="/" replace />;
+  const register = () => {
+    const user: User = {
+      name: username,
+      email,
+      password,
+    };
+    users.push(user);
+
+    setLoggedUsername(user.name);
+  };
 
   return (
     <div>
-      <h2 className="font-bold text-2xl">Login</h2>
+      <h2 className="font-bold text-2xl">
+        {isRegister ? "Register" : "Login"}
+      </h2>
 
       <div className="flex flex-col gap-4 my-5">
         <div>
@@ -42,6 +54,17 @@ const LoginPage = ({
           />
         </div>
 
+        {isRegister && (
+          <div>
+            <p>Email</p>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="px-2 py-1 bg-neutral-300 rounded-md"
+            />
+          </div>
+        )}
+
         <div>
           <p>Password</p>
           <input
@@ -52,7 +75,26 @@ const LoginPage = ({
           />
         </div>
 
-        <Button onClick={login}>Login</Button>
+        <Button
+          onClick={() => {
+            if (isRegister) register();
+            else login();
+          }}
+        >
+          {isRegister ? "Register" : "Login"}
+        </Button>
+
+        <div className="text-sm">
+          {isRegister ? "Already registered? " : "Don't have an account? "}
+          <button
+            onClick={() => {
+              setIsRegister(!isRegister);
+            }}
+            className="underline font-bold cursor-pointer"
+          >
+            {isRegister ? "Login" : "Register"}
+          </button>
+        </div>
       </div>
     </div>
   );
