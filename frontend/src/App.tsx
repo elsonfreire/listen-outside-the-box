@@ -4,7 +4,7 @@ import HomePage from "./pages/Home";
 import { useState } from "react";
 
 function App() {
-  const [logged, setLogged] = useState(false);
+  const [loggedUsername, setLoggedUsername] = useState<string | null>(null);
 
   return (
     <div className=" w-full min-h-screen">
@@ -20,7 +20,12 @@ function App() {
             <Route path="" element={<HomePage />} />
             <Route
               path="login"
-              element={<LoginPage logged={logged} setLogged={setLogged} />}
+              element={
+                <LoginPage
+                  loggedUsername={loggedUsername}
+                  setLoggedUsername={setLoggedUsername}
+                />
+              }
             />
           </Routes>
         </BrowserRouter>

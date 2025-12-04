@@ -1,22 +1,19 @@
 import { Navigate } from "react-router-dom";
 import Button from "../components/Button";
 import { useState } from "react";
+import users from "../data/users";
 
 interface LoginPageProps {
-  logged: boolean;
-  setLogged: (newValue: boolean) => void;
+  loggedUsername: string | null;
+  setLoggedUsername: (newValue: string | null) => void;
 }
 
-const LoginPage = ({ logged, setLogged }: LoginPageProps) => {
+const LoginPage = ({
+  loggedUsername: logged,
+  setLoggedUsername: setLoggedUsername,
+}: LoginPageProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const users = [
-    {
-      name: "admin",
-      password: "admin",
-    },
-  ];
 
   const login = () => {
     const user = users.find((user) => user.name === username);
@@ -25,7 +22,7 @@ const LoginPage = ({ logged, setLogged }: LoginPageProps) => {
 
     if (user.password !== password) return console.log("Wrong password");
 
-    setLogged(true);
+    setLoggedUsername(user.name);
     console.log("Logged in");
   };
 
