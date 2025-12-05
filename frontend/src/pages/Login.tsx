@@ -4,7 +4,7 @@ import { useState } from "react";
 import { login, registerUser, type User } from "../data/usersStorage";
 import { getLoggedUser, setLoggedUser } from "../data/authStorage";
 
-const LoginPage = () => {
+const LoginPage = ({ setUser }: { setUser: (user: User | null) => void }) => {
   const navigate = useNavigate();
 
   const [isRegister, setIsRegister] = useState(false);
@@ -23,6 +23,7 @@ const LoginPage = () => {
     if (user.password !== password) return console.log("Wrong password");
 
     setLoggedUser(user);
+    setUser(user);
 
     navigate("/");
   };

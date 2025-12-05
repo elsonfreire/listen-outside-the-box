@@ -4,11 +4,16 @@ import HomePage from "./pages/Home";
 import PrivateRoute from "./components/PrivateRoute";
 import ProfilePage from "./pages/Profile";
 import Header from "./components/Header";
+import { useState } from "react";
+import { getLoggedUser } from "./data/authStorage";
+import type { User } from "./data/usersStorage";
 
 function App() {
+  const [user, setUser] = useState<User | null>(getLoggedUser());
+
   return (
     <div className=" w-full min-h-screen">
-      <Header />
+      <Header user={user} />
 
       <div className="min-h-screen bg-neutral-200 py-30 flex justify-center">
         <BrowserRouter>
@@ -29,7 +34,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage setUser={setUser} />} />
           </Routes>
         </BrowserRouter>
       </div>
