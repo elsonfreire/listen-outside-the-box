@@ -1,6 +1,8 @@
 import axios from "axios";
 import Button from "../components/Button";
 import { useState } from "react";
+import { BiLike } from "react-icons/bi";
+import { BiDislike } from "react-icons/bi";
 
 const HomePage = () => {
   const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
@@ -90,9 +92,14 @@ const HomePage = () => {
           Abrir no Spotify
         </a>
       </div>
+
       <div className="flex justify-center gap-2">
-        <Button onClick={handleLike}>Like</Button>
-        <Button onClick={handleDislike}>Dislike</Button>
+        <Button onClick={handleLike}>
+          <BiLike size={24} />
+        </Button>
+        <Button onClick={handleDislike}>
+          <BiDislike size={24} />
+        </Button>
       </div>
     </div>
   );
