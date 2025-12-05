@@ -6,6 +6,7 @@ import { BiDislike } from "react-icons/bi";
 import { addAchievement } from "../utils/achievements";
 import type { User } from "../data/usersStorage";
 import { getLoggedUser } from "../data/authStorage";
+import { FaSpotify } from "react-icons/fa";
 
 const HomePage = ({
   setUser,
@@ -99,9 +100,10 @@ const HomePage = ({
         <a
           href={`https://open.spotify.com/track/${songId}`}
           target="_blank"
-          className="text-blue-800 underline"
+          className="flex items-center gap-1 text-blue-800"
         >
-          Open on Spotify
+          <FaSpotify />
+          <div className=" underline">Open on Spotify</div>
         </a>
       </div>
 
