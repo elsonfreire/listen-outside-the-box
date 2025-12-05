@@ -3,8 +3,15 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
+import { addAchievement } from "../utils/achievements";
+import type { User } from "../data/usersStorage";
+import { getLoggedUser } from "../data/authStorage";
 
-const HomePage = () => {
+const HomePage = ({
+  setUser,
+}: {
+  setUser: (newValue: User | null) => void;
+}) => {
   const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
 
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
@@ -51,6 +58,11 @@ const HomePage = () => {
   };
 
   const handleLike = async () => {
+    if (!getLoggedUser()?.hasAchievement) {
+      const updatedUser = addAchievement();
+      if (updatedUser) setUser(updatedUser);
+    }
+
     setIsLoadingSuggestion(true);
     const candidates = await getSongCandidates();
 
@@ -89,7 +101,7 @@ const HomePage = () => {
           target="_blank"
           className="text-blue-800 underline"
         >
-          Abrir no Spotify
+          Open on Spotify
         </a>
       </div>
 

@@ -33,6 +33,7 @@ const LoginPage = ({ setUser }: { setUser: (user: User | null) => void }) => {
       name: username,
       email,
       password,
+      hasAchievement: false,
     };
     registerUser(user);
 

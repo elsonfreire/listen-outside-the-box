@@ -22,7 +22,7 @@ function App() {
               path=""
               element={
                 <PrivateRoute>
-                  <HomePage />
+                  <HomePage setUser={setUser} />
                 </PrivateRoute>
               }
             />
