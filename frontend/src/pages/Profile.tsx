@@ -20,9 +20,13 @@ const ProfilePage = () => {
 
         <div className="flex flex-col gap-6 my-5">
           <h3 className="font-bold text-xl">Achievements</h3>
-          <div className="grid grid-cols-4">
-            <img className="w-12" src={achievementImg} />
-          </div>
+          {user?.hasAchievement ? (
+            <div className="grid grid-cols-4">
+              <img className="w-12" src={achievementImg} />
+            </div>
+          ) : (
+            <div className="italic">You don't have any achievements yet!</div>
+          )}
         </div>
       </div>
     </div>
