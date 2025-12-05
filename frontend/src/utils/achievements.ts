@@ -1,7 +1,8 @@
+import { toast } from "react-toastify";
 import { getLoggedUser, setLoggedUser } from "../data/authStorage";
 import { getUsers, saveUsers, type User } from "../data/usersStorage";
 
-export const addAchievement = () => {
+export const addAchievement = (description: string) => {
   const loggedUser = getLoggedUser();
   const users = getUsers();
 
@@ -17,6 +18,8 @@ export const addAchievement = () => {
 
   setLoggedUser(updatedUser);
   saveUsers(updatedUsers);
+
+  toast.success(`🏅 Got Achievement: ${description}`);
 
   return updatedUser;
 };

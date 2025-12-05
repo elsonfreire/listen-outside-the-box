@@ -59,7 +59,7 @@ const HomePage = ({
 
   const handleLike = async () => {
     if (!getLoggedUser()?.hasAchievement) {
-      const updatedUser = addAchievement();
+      const updatedUser = addAchievement("Liked a song!");
       if (updatedUser) setUser(updatedUser);
     }
 

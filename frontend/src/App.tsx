@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import { useState } from "react";
 import { getLoggedUser } from "./data/authStorage";
 import type { User } from "./data/usersStorage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [user, setUser] = useState<User | null>(getLoggedUser());
@@ -38,6 +39,8 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+
+      <ToastContainer theme="dark" />
     </div>
   );
 }
