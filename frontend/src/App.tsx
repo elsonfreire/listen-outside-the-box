@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className=" w-full min-h-screen">
-      <Header user={user} />
+      <Header user={user} setUser={setUser} />
 
       <div className="min-h-screen bg-neutral-200 py-30 flex justify-center">
         <BrowserRouter>
