@@ -1,5 +1,6 @@
 import axios from "axios";
 import Button from "../components/Button";
+import SearchBar from "../components/SearchBar";
 import { useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
@@ -17,6 +18,7 @@ const HomePage = ({
 
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
   const [artistName, setArtistName] = useState("Jorge Vercillo");
+  const [songPopularity, setSongPopularity] = useState(80);
   const [songId, setSongId] = useState(
     "2fAwUj2Ezq0uB2ClAKEDb1?si=00f82328433e4ade"
   );
@@ -26,12 +28,29 @@ const HomePage = ({
   const setSuggestion = (song: any) => {
     setSongName(song.name);
     setArtistName(song.artist);
+    setSongPopularity(song.popularity);
     setSongId(song.id);
+  };
+
+  const handleSearchSelect = (song: any) => {
+    setSongName(song.name);
+    setArtistName(song.artist);
+    setSongPopularity(song.popularity);
+    setSongId(song.id);
+    // Limpa candidatos ao selecionar nova música
+    setCandidateSongs([]);
   };
 
   const getSongCandidates = async () => {
     try {
-      const response = axios.get(`http://localhost:5000/candidates/${songId}`);
+      const response = axios.get(`https://8b5af84a5bf3.ngrok-free.app/candidates/${songId}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+            "Content-Type": "application/json"
+          }
+        }
+      );
 
       const candidates = (await response).data.candidates || [];
       setCandidateSongs(candidates);
@@ -86,35 +105,45 @@ const HomePage = ({
     setIsLoadingSuggestion(false);
   };
 
-  return isLoadingSuggestion ? (
-    <h3 className="font-bold text-2xl text-center">
-      Loading next song suggestion...
-    </h3>
-  ) : (
+  return (
     <div className="flex flex-col gap-10">
-      <div className="flex flex-col gap-4 items-center">
-        <div>
-          <h2 className="font-bold text-4xl text-center">{songName}</h2>
-          <h3 className="font-bold text-2xl text-center">{artistName}</h3>
-        </div>
-        <a
-          href={`https://open.spotify.com/track/${songId}`}
-          target="_blank"
-          className="flex items-center gap-1 text-blue-800"
-        >
-          <FaSpotify />
-          <div className=" underline">Open on Spotify</div>
-        </a>
+      {/* Search Bar */}
+      <div className="w-full">
+        <SearchBar onSelectSong={handleSearchSelect} />
       </div>
 
-      <div className="flex justify-center gap-2">
-        <Button onClick={handleLike}>
-          <BiLike size={24} />
-        </Button>
-        <Button onClick={handleDislike}>
-          <BiDislike size={24} />
-        </Button>
-      </div>
+      {isLoadingSuggestion ? (
+        <h3 className="font-bold text-2xl text-center">
+          Loading next song suggestion...
+        </h3>
+      ) : (
+        <>
+          <div className="flex flex-col gap-4 items-center">
+            <div>
+              <h2 className="font-bold text-4xl text-center">{songName}</h2>
+              <h3 className="font-bold text-2xl text-center">{artistName}</h3>
+              <h4 className="text-md text-center">Popularidade: {songPopularity}/100</h4>
+            </div>
+            <a
+              href={`https://open.spotify.com/track/${songId}`}
+              target="_blank"
+              className="flex items-center gap-1 text-blue-800"
+            >
+              <FaSpotify />
+              <div className=" underline">Open on Spotify</div>
+            </a>
+          </div>
+
+          <div className="flex justify-center gap-2">
+            <Button onClick={handleLike}>
+              <BiLike size={24} />
+            </Button>
+            <Button onClick={handleDislike}>
+              <BiDislike size={24} />
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
