@@ -14,6 +14,8 @@ const HomePage = ({
 }: {
   setUser: (newValue: User | null) => void;
 }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
 
   const [songName, setSongName] = useState("Ela Une Todas as Coisas");
@@ -43,14 +45,12 @@ const HomePage = ({
 
   const getSongCandidates = async () => {
     try {
-      const response = axios.get(`https://8b5af84a5bf3.ngrok-free.app/candidates/${songId}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-            "Content-Type": "application/json"
-          }
-        }
-      );
+      const response = axios.get(`${API_URL}/candidates/${songId}`, {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json",
+        },
+      });
 
       const candidates = (await response).data.candidates || [];
       setCandidateSongs(candidates);
@@ -122,7 +122,9 @@ const HomePage = ({
             <div>
               <h2 className="font-bold text-4xl text-center">{songName}</h2>
               <h3 className="font-bold text-2xl text-center">{artistName}</h3>
-              <h4 className="text-md text-center">Popularidade: {songPopularity}/100</h4>
+              <h4 className="text-md text-center">
+                Popularidade: {songPopularity}/100
+              </h4>
             </div>
             <a
               href={`https://open.spotify.com/track/${songId}`}
